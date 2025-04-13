@@ -102,31 +102,11 @@ const ClubScroller = () => {
                         ))}
                     </div>
                 </div>
-                <Image
-                    src={'asthetics1.svg'}
-                    alt="background"
-                    height={300}
-                    width={300}
-                    className="absolute top-0 -left-10 opacity-45"
-                    style={{
-                        filter: 'grayscale(80%)',
-                    }}
-                />
-                <Image
-                    src={'asthetics.svg'}
-                    alt="background"
-                    height={350}
-                    width={350}
-                    className="absolute bottom-0 -right-10 opacity-45"
-                    style={{
-                        filter: 'grayscale(80%)',
-                    }}
-                />
             </div>
 
             {/* Parallax Text in Background */}
             <div
-                className="absolute left-1/2 top-1/2 w-full h-full flex justify-center items-center font-bold text-center opacity-10 transition-all duration-500 ease-out bg-red-400 pointer-events-none"
+                className="absolute left-1/2 top-1/2 w-full h-full flex justify-center items-center font-bold text-center opacity-10 transition-all duration-500 ease-out bg-white pointer-events-none"
                 style={{
                     transform: `translate(-50%, -50%) scale(${
                         scale < 3.2 ? scale : scale * 4
@@ -138,7 +118,7 @@ const ClubScroller = () => {
                     whiteSpace: 'nowrap',
                 }}
             >
-                <p className="text-white">SOCIETIES</p>
+                <p className="text-red-300">SOCIETIES</p>
             </div>
         </div>
     );

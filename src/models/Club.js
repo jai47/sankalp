@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const clubSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true, trim: true },
     description: { type: String, trim: true },
-    adminId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    adminId: [{ type: mongoose.Schema.Types.Object }],
+    members: [{ type: mongoose.Schema.Types.Object }],
     vision: { type: String, trim: true },
     mission: { type: String, trim: true },
     values: { type: String, trim: true },

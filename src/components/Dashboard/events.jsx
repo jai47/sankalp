@@ -1,28 +1,17 @@
 import { fetchClubEvents } from '@/actions/events/fetchEvents';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const Events = ({ user }) => {
-    const userData = user[0];
-    const [clubEvents, setClubEvents] = React.useState([]);
-    const [registeredEvents, setRegisteredEvents] = React.useState([]);
+const Events = ({ user, clubEvents }) => {
+    const [registeredEvents, setRegisteredEvents] = useState([]);
 
-    async function getEvents() {
-        if (!userData?.clubId?.id) return;
-
-        const events = await fetchClubEvents(userData?.clubId?.id);
-        setClubEvents(events);
-
+    useEffect(() => {
         // Filter only registered events
-        const filtered = events.filter((event) =>
-            userData.events.includes(event._id)
+        const filtered = clubEvents.filter((event) =>
+            user[0]?.events.includes(event._id)
         );
         setRegisteredEvents(filtered);
-    }
-
-    React.useEffect(() => {
-        getEvents();
-    }, [userData?.clubId?.id]);
+    }, [user[0]?.events, clubEvents]);
 
     return (
         <div className="w-full px-10 py-6">
