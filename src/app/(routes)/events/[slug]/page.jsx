@@ -9,6 +9,7 @@ import React, { use } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer/footer';
 import { useSession } from 'next-auth/react';
+import { getUser } from '@/actions/users/getUser';
 
 function ImageGrid() {
     const images = [
@@ -77,8 +78,21 @@ const Page = ({ params }) => {
     const decodedSlug = decodeURIComponent(slug);
     const [event, setEvent] = React.useState({});
     const [loading, setLoading] = React.useState(true);
+    const [isAlreadyRegistered, setIsAlreadyRegistered] = React.useState(false);
 
     React.useEffect(() => {
+        if (!session?.user?.email) return;
+        async function User() {
+            const user = await getUser(session?.user?.email);
+            console.log(user[0].events);
+            console.log(decodedSlug);
+            const isRegistered = user[0].events.some(
+                (event) => event === decodedSlug
+            );
+            setIsAlreadyRegistered(isRegistered);
+        }
+        User();
+
         async function fetchEvent() {
             setLoading(true);
             const response = await fetch('/api/events', {
@@ -98,7 +112,7 @@ const Page = ({ params }) => {
             }
         }
         fetchEvent();
-    }, []);
+    }, [session]);
     // Find the event where the name matches the slug
     // const event = eventsData.find((event) => event.name === decodedSlug);
 
@@ -155,39 +169,49 @@ const Page = ({ params }) => {
                                     <span>Venue: {event.venue}</span>
                                 </p>
                                 <div className="relative">
-                                    <button
-                                        className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700"
-                                        onClick={async (e) => {
-                                            e.preventDefault();
-                                            const response = await fetch(
-                                                '/api/events/rsvp',
-                                                {
-                                                    method: 'POST',
-                                                    headers: {
-                                                        'Content-Type':
-                                                            'application/json',
-                                                    },
-                                                    body: JSON.stringify({
-                                                        eventId: decodedSlug,
-                                                        userId: session?.user
-                                                            ?.id,
-                                                    }),
-                                                }
-                                            )
-                                                .then((res) => res.json())
-                                                .then((data) => {
-                                                    if (data.success) {
-                                                        alert(
-                                                            'RSVP successful'
-                                                        );
-                                                    } else {
-                                                        alert('RSVP failed');
+                                    {!isAlreadyRegistered ? (
+                                        <button
+                                            className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700"
+                                            onClick={async (e) => {
+                                                e.preventDefault();
+                                                const response = await fetch(
+                                                    '/api/events/rsvp',
+                                                    {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type':
+                                                                'application/json',
+                                                        },
+                                                        body: JSON.stringify({
+                                                            eventId:
+                                                                decodedSlug,
+                                                            userId: session
+                                                                ?.user?.id,
+                                                        }),
                                                     }
-                                                });
-                                        }}
-                                    >
-                                        RSVP
-                                    </button>
+                                                )
+                                                    .then((res) => res.json())
+                                                    .then((data) => {
+                                                        if (data.success) {
+                                                            alert(
+                                                                'RSVP successful'
+                                                            );
+                                                            window.location.reload();
+                                                        } else {
+                                                            alert(
+                                                                'RSVP failed'
+                                                            );
+                                                        }
+                                                    });
+                                            }}
+                                        >
+                                            RSVP
+                                        </button>
+                                    ) : (
+                                        <p className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700">
+                                            Registered
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>

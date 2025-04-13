@@ -1,7 +1,13 @@
 import React from 'react';
 
 const Profile = ({ user, club }) => {
-    return <div>{user[0]?.name}</div>;
+    console.log(user);
+    return (
+        <div>
+            {user[0]?.name}
+            <p>{user[0]?.clubId?.name}</p>
+        </div>
+    );
 };
 
 export default Profile;

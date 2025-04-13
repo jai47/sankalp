@@ -2,49 +2,76 @@ import React from 'react';
 import Parallex from '../Parallex';
 
 const Profile = ({ user }) => {
+    const userData = user[0];
+
     return (
-        <div className="w-full h-full bg-white p-6 rounded-lg shadow-md">
-            <div className="relative mb-20">
+        <div className="w-full h-full bg-white p-6 rounded-xl shadow-xl">
+            {/* Header with Cover and Profile Image */}
+            <div className="relative mb-24">
                 <Parallex
                     image="/bg1.jpeg"
-                    desc="Stay updated with the latest technical, cultural, and workshop blogs from various clubs."
-                    heading="My profile"
-                    className="h-[25vh] w-full rounded-[5px]"
+                    desc="View all your profile details"
+                    heading="My Profile"
+                    className="h-[25vh] w-full rounded-xl"
                 />
                 <img
-                    src={user[0]?.image || 'user'}
-                    className="rounded-full absolute bottom-[-70px] left-24 transform -translate-x-1/2 w-36 h-36 border-4 border-white shadow-lg"
+                    src={userData?.image || 'user'}
+                    alt="Profile"
+                    className="rounded-full absolute bottom-[-70px] left-24 transform -translate-x-1/2 w-36 h-36 border-4 border-white shadow-lg object-cover"
                 />
             </div>
-            <div className="w-full h-[55vh] bg-gray-100 rounded-[5px] flex p-2">
-                <div className="bg-red-100 w-">
-                    <h3 className="text-lg font-bold">
-                        {user[0]?.name.split(' ')[1] || 'user'}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                        {user[0]?.email || 'user'}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                        <span className="font-bold">Club</span>:{' '}
-                        {user[0]?.clubId?.name || 'user'}
-                    </p>
 
-                    <p className="text-sm text-gray-600">
-                        <span className="font-bold">Role</span>:{' '}
-                        {user[0]?.role || 'user'}
+            {/* User Info Card */}
+            <div className="w-full bg-gray-50 rounded-xl p-6 shadow flex flex-col md:flex-row gap-8">
+                <div className="flex flex-col gap-3 text-gray-800 w-full md:w-1/2">
+                    <h2 className="text-2xl font-semibold">
+                        {userData?.name?.split(' ')[1] || 'User'}
+                    </h2>
+                    <p className="text-sm text-gray-600">{userData?.email}</p>
+                    <p className="text-sm">
+                        <span className="font-semibold">Role:</span>{' '}
+                        {userData?.role}
                     </p>
-                    <p className="text-sm text-gray-600">
-                        total registered in event:{' '}
-                        {user[0]?.events?.length || 'user'}
+                    <p className="text-sm">
+                        <span className="font-semibold">Club:</span>{' '}
+                        {userData?.clubId?.name || 'None'}
                     </p>
-                    <p className="text-sm text-gray-600">
-                        total certificates earned:{' '}
-                        {user[0]?.certificate?.length || 'user'}
-                    </p>
+                </div>
+
+                <div className="flex flex-col gap-4 text-gray-800 w-full md:w-1/2">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+                        <StatCard
+                            label="Events Registered"
+                            value={user[0]?.events?.length || 0}
+                        />
+                        <StatCard
+                            label="Certificates Earned"
+                            value={user[0]?.certificate?.length || 0}
+                        />
+                        <StatCard
+                            label="Comments"
+                            value={user[0]?.activity?.comments?.length || 0}
+                        />
+                        <StatCard
+                            label="Bookmarks"
+                            value={user[0]?.activity?.bookmarks?.length || 0}
+                        />
+                        <StatCard
+                            label="Likes"
+                            value={user[0]?.activity?.likes?.length || 0}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
+
+const StatCard = ({ label, value }) => (
+    <div className="bg-white rounded-xl shadow-md h-28 w-28 p-2 flex flex-col items-center justify-center hover:shadow-lg transition-all duration-300">
+        <p className="text-2xl font-bold text-red-500 h-1/2">{value}</p>
+        <p className="text-sm text-gray-500 h-1/2">{label}</p>
+    </div>
+);
 
 export default Profile;

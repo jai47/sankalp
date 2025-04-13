@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import useParallex from '@/hooks/useParallex';
 import Card from '@/components/Home/card';
 import Footer from '@/components/Footer/footer';
-import ClubsCarousel from '@/components/Home/ClubsCoursal';
+
 import SocialMedia from '@/components/Home/socialmedia';
 import CentralCard from '@/components/Home/CentralCard';
+import ClubScroller from '@/components/Home/ClubsCoursal';
 
 const Home = () => {
     const scrollY = useParallex();
@@ -102,7 +103,7 @@ const Home = () => {
                     className="absolute inset-0 w-full h-full transition-transform duration-300 ease-out"
                     style={{
                         transform: `translateY(${
-                            scrollY * 0.2 - 250
+                            scrollY * 0.2 - 200
                         }px) scale(${scrollY * 0.0001 + 1})`,
                         transformOrigin: 'center center',
                     }}
@@ -132,7 +133,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <ClubsCarousel />
+            <ClubScroller />
 
             {/* Social Media section */}
             <section

@@ -17,7 +17,7 @@ export async function fetchClubEvents(clubId, eventId = null) {
         // Find the club by ID
         const club = await clubModel.findById(clubId);
         if (!club) {
-            throw new Error('Club not found');
+            console.log('Club not found');
         }
 
         // If eventId is provided, find only that event, otherwise fetch all club events
