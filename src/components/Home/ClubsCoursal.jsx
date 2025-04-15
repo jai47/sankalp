@@ -4,6 +4,7 @@ import { getClubs } from '@/actions/clubs/getClubs';
 import useParallax from '@/hooks/useParallex';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const ClubScroller = () => {
@@ -81,9 +82,12 @@ const ClubScroller = () => {
                                         {currentClub?.description}
                                     </p>
                                 </div>
-                                <button className="self-start px-6 py-3 bg-white rounded-full shadow text-gray-900 font-medium hover:bg-gray-100 transition font-serif">
+                                <Link
+                                    href={`/clubs/${currentClub?._id}`}
+                                    className="self-start px-6 py-3 bg-white rounded-full shadow text-gray-900 font-medium hover:bg-gray-100 transition font-serif"
+                                >
                                     Join →
-                                </button>
+                                </Link>
                             </motion.div>
                         </motion.div>
                     </AnimatePresence>

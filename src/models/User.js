@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     image: { type: String }, // Store profile picture if needed
     role: {
         type: String,
-        enum: ['super_admin', 'admin', 'student'], // Added 'student' here
+        enum: ['admin', 'student', 'superAdmin', 'member'], // Added 'student' here
         default: 'student',
         required: true,
     },

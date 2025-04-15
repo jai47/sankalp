@@ -29,7 +29,7 @@ function ContactUs({ className = '' }) {
     };
 
     return (
-        <div className="bg-[#FE2A00] w-full min-h-screen flex flex-col items-center rounded-lg justify-center py-10 px-4">
+        <div className="bg-[#FE2A00] w-full min-h-screen flex flex-col items-center justify-center py-10 px-4">
             {/* Heading */}
             <div className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl text-white font-extrabold">

@@ -2,17 +2,7 @@ import { fetchClubEvents } from '@/actions/events/fetchEvents';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const Events = ({ user, clubEvents }) => {
-    const [registeredEvents, setRegisteredEvents] = useState([]);
-
-    useEffect(() => {
-        // Filter only registered events
-        const filtered = clubEvents.filter((event) =>
-            user[0]?.events.includes(event._id)
-        );
-        setRegisteredEvents(filtered);
-    }, [user[0]?.events, clubEvents]);
-
+const Events = ({ user, clubEvents, registeredEvents }) => {
     return (
         <div className="w-full px-10 py-6">
             <h2 className="text-2xl font-bold mb-4">My Events</h2>

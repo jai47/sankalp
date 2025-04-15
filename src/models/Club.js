@@ -23,6 +23,7 @@ const clubSchema = new mongoose.Schema({
     contactEmail: { type: String, trim: true },
     contactPhone: { type: String, trim: true },
     logo: { type: String, default: null },
+    banner: { type: String, default: null },
     category: {
         type: String,
         enum: ['Khetij', 'Technical', 'Samatva', 'Sports'],

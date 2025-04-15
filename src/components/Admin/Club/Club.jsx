@@ -23,6 +23,7 @@ const Club = () => {
         linkedin: '',
         category: '',
         logo: '',
+        banner: '',
     });
 
     // const club = await getClubs('Tech Innovators Club');
@@ -82,6 +83,7 @@ const Club = () => {
                     instagram: '',
                     linkedin: '',
                     category: '',
+                    banner: '',
                 });
 
                 setShowModal(false);
@@ -268,6 +270,14 @@ const Club = () => {
                                 name="logo"
                                 placeholder="Logo URL"
                                 value={newClubDetails.logo}
+                                onChange={handleChange}
+                                className="input-field"
+                            />
+                            <input
+                                type="url"
+                                name="banner"
+                                placeholder="Banner URL"
+                                value={newClubDetails.banner}
                                 onChange={handleChange}
                                 className="input-field"
                             />

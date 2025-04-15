@@ -32,3 +32,18 @@ export async function fetchClubEvents(clubId, eventId = null) {
         throw new Error('Failed to fetch club events');
     }
 }
+
+export async function fetchRegisteredEvents(eventList) {
+    try {
+        await connectDB();
+
+        const events = await eventModel.find({ _id: { $in: eventList } });
+        if (!events) {
+            console.log('No events found');
+        }
+        return JSON.parse(JSON.stringify(events));
+    } catch (e) {
+        console.error('Error fetching registered events:', e);
+        return { sucess: false, message: 'Failed to fetch registered events' };
+    }
+}

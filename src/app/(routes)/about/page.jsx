@@ -70,7 +70,7 @@ function About() {
             </section>
 
             {/* MAP & TALK-TO-US SECTION */}
-            <section className="flex flex-col md:flex-row justify-between p-5 gap-5">
+            <section className="flex flex-col md:flex-row justify-between">
                 <div className="w-full md:w-1/2 flex items-center justify-center">
                     <Map />
                 </div>

@@ -4,7 +4,10 @@ import Chat from './chat';
 import Club from './club';
 import Events from './events';
 import Profile from './profile';
-import { fetchClubEvents } from '@/actions/events/fetchEvents';
+import {
+    fetchClubEvents,
+    fetchRegisteredEvents,
+} from '@/actions/events/fetchEvents';
 import { getClubs } from '@/actions/clubs/getClubs';
 
 const Overview = ({ section, user }) => {
@@ -13,19 +16,23 @@ const Overview = ({ section, user }) => {
 
     const [club, setClub] = useState(null);
     const [clubEvents, setClubEvents] = useState([]);
+    const [registeredEvents, setRegisteredEvents] = useState([]);
 
     useEffect(() => {
         if (!clubId) return;
 
         const fetchData = async () => {
             try {
-                const [clubData, events] = await Promise.all([
+                const [clubData, events, enrolledEvents] = await Promise.all([
                     getClubs(clubId),
                     fetchClubEvents(clubId),
+                    fetchRegisteredEvents(userData?.events),
                 ]);
 
                 setClub(clubData?.[0] || null);
                 setClubEvents(events || []);
+                setRegisteredEvents(enrolledEvents || []);
+                console.log(enrolledEvents);
             } catch (error) {
                 console.error('Error fetching club data or events:', error);
             }
@@ -38,7 +45,13 @@ const Overview = ({ section, user }) => {
         case 'Profile':
             return <Profile user={user} />;
         case 'Events':
-            return <Events user={user} clubEvents={clubEvents} />;
+            return (
+                <Events
+                    user={user}
+                    clubEvents={clubEvents}
+                    registeredEvents={registeredEvents}
+                />
+            );
         case 'Club':
             return <Club user={user} club={club} />;
         case 'Certificates':

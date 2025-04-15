@@ -6,6 +6,7 @@ import {
     FaTwitter,
 } from 'react-icons/fa';
 import Image from 'next/image';
+import { leaveClub } from '@/actions/clubs/joinClub';
 
 const Club = ({ user, club }) => {
     if (!club)
@@ -147,6 +148,19 @@ const Club = ({ user, club }) => {
                                     <FaLinkedinIn className="hover:text-blue-700" />
                                 </a>
                             )}
+                        </div>
+                        <div className="w-full flex justify-end mt-4">
+                            <button
+                                onClick={async () => {
+                                    const res = await leaveClub(user[0]?._id);
+                                    if (res.success) {
+                                        alert('Successfully left the club');
+                                    }
+                                }}
+                                className="text-sm px-4 py-2 rounded-full bg-red-500 text-white"
+                            >
+                                Leave
+                            </button>
                         </div>
                     </div>
                 </div>
