@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Footer from '@/components/Footer/footer';
 import { useSession } from 'next-auth/react';
 import { getUser } from '@/actions/users/getUser';
+import { toast } from 'react-toastify';
 
 function ImageGrid() {
     const images = [
@@ -81,18 +82,6 @@ const Page = ({ params }) => {
     const [isAlreadyRegistered, setIsAlreadyRegistered] = React.useState(false);
 
     React.useEffect(() => {
-        if (!session?.user?.email) return;
-        async function User() {
-            const user = await getUser(session?.user?.email);
-            console.log(user[0].events);
-            console.log(decodedSlug);
-            const isRegistered = user[0].events.some(
-                (event) => event === decodedSlug
-            );
-            setIsAlreadyRegistered(isRegistered);
-        }
-        User();
-
         async function fetchEvent() {
             setLoading(true);
             const response = await fetch('/api/events', {
@@ -107,14 +96,20 @@ const Page = ({ params }) => {
                 setEvent(data.body.event);
                 setLoading(false);
             } else {
-                console.error('Event not found');
                 setLoading(false);
             }
         }
+        async function User() {
+            const user = await getUser(session?.user?.email);
+            const isRegistered = user[0].events.some(
+                (event) => event === decodedSlug
+            );
+            setIsAlreadyRegistered(isRegistered);
+        }
         fetchEvent();
+        if (!session?.user?.email) return;
+        User();
     }, [session]);
-    // Find the event where the name matches the slug
-    // const event = eventsData.find((event) => event.name === decodedSlug);
 
     if (!event) {
         return <div>Event not found</div>;
@@ -124,39 +119,6 @@ const Page = ({ params }) => {
         <div className="w-screen h-screen flex flex-col items-center gap-10 mt-10">
             {!loading ? (
                 <>
-                    <div className="w-1/2 flex justify-between items-center select-none">
-                        <div>
-                            <ul className="flex text-lg space-x-8 font-thin">
-                                <Link
-                                    href={`#gallery`}
-                                    className={`cursor-pointer hover:text-red-600 `}
-                                >
-                                    Gallery
-                                </Link>
-                                <Link
-                                    href="/blogs?filter=feature"
-                                    scroll={false}
-                                    className={`cursor-pointer hover:text-red-600 `}
-                                >
-                                    Featured
-                                </Link>
-                                <Link
-                                    href="/blogs?filter=latest"
-                                    scroll={false}
-                                    className={`cursor-pointer hover:text-red-600 `}
-                                >
-                                    Latest
-                                </Link>
-                                <Link
-                                    href="/blogs?filter=populor"
-                                    scroll={false}
-                                    className={`cursor-pointer hover:text-red-600 `}
-                                >
-                                    Most Popular
-                                </Link>
-                            </ul>
-                        </div>
-                    </div>
                     <div className="w-1/2 border p-10">
                         <div className="flex items-center justify-start gap-2 mb-10">
                             <HiUserCircle size={40} className="text-gray-400" />
@@ -168,51 +130,6 @@ const Page = ({ params }) => {
                                     <span className="w-[4px] h-[4px] block rounded-full bg-black" />
                                     <span>Venue: {event.venue}</span>
                                 </p>
-                                <div className="relative">
-                                    {!isAlreadyRegistered ? (
-                                        <button
-                                            className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700"
-                                            onClick={async (e) => {
-                                                e.preventDefault();
-                                                const response = await fetch(
-                                                    '/api/events/rsvp',
-                                                    {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'Content-Type':
-                                                                'application/json',
-                                                        },
-                                                        body: JSON.stringify({
-                                                            eventId:
-                                                                decodedSlug,
-                                                            userId: session
-                                                                ?.user?.id,
-                                                        }),
-                                                    }
-                                                )
-                                                    .then((res) => res.json())
-                                                    .then((data) => {
-                                                        if (data.success) {
-                                                            alert(
-                                                                'RSVP successful'
-                                                            );
-                                                            window.location.reload();
-                                                        } else {
-                                                            alert(
-                                                                'RSVP failed'
-                                                            );
-                                                        }
-                                                    });
-                                            }}
-                                        >
-                                            RSVP
-                                        </button>
-                                    ) : (
-                                        <p className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700">
-                                            Registered
-                                        </p>
-                                    )}
-                                </div>
                             </div>
                         </div>
                         <h1 className="text-3xl font-bold mb-5">
@@ -281,3 +198,53 @@ const Page = ({ params }) => {
 };
 
 export default Page;
+
+{
+    /* <div className="relative">
+{!isAlreadyRegistered ? (
+    <button
+        className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700"
+        onClick={async (e) => {
+            e.preventDefault();
+            const response = await fetch(
+                '/api/events/rsvp',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/json',
+                    },
+                    body: JSON.stringify({
+                        eventId:
+                            decodedSlug,
+                        userId: session
+                            ?.user?.id,
+                    }),
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        toast.success(
+                            'RSVP successful'
+                        );
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        alert(
+                            'RSVP failed'
+                        );
+                    }
+                });
+        }}
+    >
+        RSVP
+    </button>
+) : (
+    <p className="bg-red-500 px-7 py-3 border border-gray-100 text-white hover:bg-red-700">
+        Registered
+    </p>
+)}
+</div> */
+}

@@ -89,11 +89,6 @@ const Sidebar = () => {
                         icon: <MdSpaceDashboard />,
                     },
                     {
-                        name: 'Profile',
-                        section: 'Profile',
-                        icon: <FaUser />,
-                    },
-                    {
                         name: 'My Club',
                         section: 'Club',
                         icon: <FaCertificate />,

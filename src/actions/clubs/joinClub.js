@@ -23,7 +23,8 @@ export async function joinClub(clubId, userId) {
         }
 
         // Add the user to the club
-        club.members.push({ name: user.name, id: user._id, email: user.email });
+        club.members.push(user.email);
+        // club.members.push({ name: user.name, id: user._id, email: user.email });
         club.markModified('members');
         await club.save();
 
@@ -61,7 +62,7 @@ export async function leaveClub(userId) {
             return { error: 'Club not found' };
         }
         club.members = club.members.filter(
-            (member) => member.toString() !== user._id.toString()
+            (member) => member.toString() !== user.email.toString()
         );
         await club.save();
         // Reset the user's club ID

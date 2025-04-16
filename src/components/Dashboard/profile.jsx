@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Parallex from '../Parallex';
+import { FiCamera } from 'react-icons/fi';
+import { updatePFP } from '@/actions/users/updatePFP';
+import { toast } from 'react-toastify';
 
 const Profile = ({ user }) => {
     const userData = user[0];
+    const [imagePreview, setImagePreview] = useState(userData?.image);
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.size > 500 * 1024) {
+            toast.info('File size exceeds 500Kb');
+            return;
+        }
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+            const base64Image = reader.result;
+
+            try {
+                const updatedUser = await updatePFP(
+                    userData.email,
+                    base64Image
+                );
+                if (updatedUser?.image) {
+                    setImagePreview(updatedUser.image);
+                }
+            } catch (err) {
+                console.error('Failed to update image:', err);
+            }
+        };
+
+        reader.readAsDataURL(file);
+    };
 
     return (
         <div className="w-full h-full bg-white p-6 rounded-xl shadow-xl">
@@ -14,11 +47,25 @@ const Profile = ({ user }) => {
                     heading="My Profile"
                     className="h-[25vh] w-full rounded-xl"
                 />
-                <img
-                    src={userData?.image || 'user'}
-                    alt="Profile"
-                    className="rounded-full absolute bottom-[-70px] left-24 transform -translate-x-1/2 w-36 h-36 border-4 border-white shadow-lg object-cover"
-                />
+                <div className="group w-36 h-36 absolute bottom-[-70px] left-24 transform -translate-x-1/2">
+                    <img
+                        src={imagePreview || userData?.image}
+                        alt="Profile"
+                        className="rounded-full w-full h-full border-4 border-white shadow-lg object-cover transition duration-300 group-hover:blur-sm"
+                    />
+                    <label htmlFor="pfp-upload" className="cursor-pointer">
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer">
+                            <FiCamera className="text-white text-2xl" />
+                        </div>
+                    </label>
+                    <input
+                        type="file"
+                        id="pfp-upload"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
+                    />
+                </div>
             </div>
 
             {/* User Info Card */}

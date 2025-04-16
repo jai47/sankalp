@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             // // Store user info in the token for session callback
             user.id = existingUser._id.toString();
             user.role = existingUser.role;
-            user.image = existingUser.image;
+            user.image = user.image;
 
             return true;
         },

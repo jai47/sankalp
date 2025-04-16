@@ -16,6 +16,29 @@ export async function getUser(email = null) {
     }
 }
 
+export async function getSpecificUsers(emails) {
+    try {
+        await connectDB(); // Ensure database connection
+
+        const users = await userModel.find(
+            { email: { $in: emails } },
+            { name: 1, email: 1, image: 1, _id: 0 } // projection: only required fields
+        );
+
+        if (!users || users.length === 0) {
+            return { success: false, message: 'No users found' };
+        }
+
+        return {
+            success: true,
+            users: JSON.parse(JSON.stringify(users)),
+        };
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return { success: false, message: 'Error fetching users' };
+    }
+}
+
 //used by next-auth to add user to the database
 export async function getUserAuth(user) {
     try {

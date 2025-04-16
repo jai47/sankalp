@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 const Events = ({ user, clubEvents, registeredEvents }) => {
     return (
-        <div className="w-full px-10 py-6">
+        <div className="w-full px-10 py-6 overflow-auto">
             <h2 className="text-2xl font-bold mb-4">My Events</h2>
-            <div className="flex flex-wrap gap-4 overflow-x-auto pb-4">
+            <div className="grid grid-cols-4 gap-4 overflow-x-auto pb-4">
                 {registeredEvents.length > 0 ? (
                     registeredEvents.map((event) => (
                         <div
@@ -32,6 +32,9 @@ const Events = ({ user, clubEvents, registeredEvents }) => {
                                     {new Date(
                                         event.dateTime
                                     ).toLocaleDateString()}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    {event.clubName}
                                 </p>
                             </div>
                         </div>

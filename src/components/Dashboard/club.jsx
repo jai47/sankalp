@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     FaFacebookF,
     FaInstagram,
@@ -7,10 +7,22 @@ import {
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { leaveClub } from '@/actions/clubs/joinClub';
+import { getSpecificUsers } from '@/actions/users/getUser';
 
 const Club = ({ user, club }) => {
     if (!club)
-        return <div className="text-center mt-10">Loading club info...</div>;
+        return (
+            <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-2 rounded-full animate-spin border-gray-400 border-b-white"></div>
+                    <p className="text-gray-600 text-sm">
+                        Loading, please wait...
+                    </p>
+                </div>
+            </div>
+        );
+    const [adminId, setAdminId] = React.useState([]);
+    const [members, setMembers] = React.useState([]);
 
     const {
         name,
@@ -24,10 +36,28 @@ const Club = ({ user, club }) => {
         socialMediaLinks,
         contactEmail,
         contactPhone,
-        adminId,
-        members,
         category,
     } = club;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const [admins, members] = await Promise.all([
+                getSpecificUsers(club.adminId),
+                getSpecificUsers(club.members),
+            ]);
+            if (admins.success) {
+                setAdminId(admins.users);
+            } else {
+                console.error('Error fetching admins:', admins.message);
+            }
+            if (members.success) {
+                setMembers(members.users);
+            } else {
+                console.error('Error fetching members:', members.message);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="p-6 md:p-10 max-w-6xl mx-auto grid md:grid-cols-3 gap-10">

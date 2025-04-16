@@ -43,7 +43,7 @@ const ClubScroller = () => {
                 <div className="h-full w-full flex flex-col justify-center items-center bg-gray-50 py-10">
                     <AnimatePresence mode="wait">
                         <motion.div
-                            key={currentClub._id || index}
+                            key={currentClub?._id || index}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}

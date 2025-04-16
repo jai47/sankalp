@@ -1,5 +1,7 @@
 'use client';
 import React from 'react';
+import { FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { IoLogoCodepen } from 'react-icons/io';
 
 const page = () => {
     return (
@@ -60,6 +62,71 @@ const page = () => {
                     </div>
                 </div>
             </section>
+            <div className="w-[230px] rounded-md bg-[#ffe0e0] p-[5px] overflow-hidden shadow-[rgba(100,100,111,0.2)_0px_7px_20px_0px] transition-transform duration-500 hover:scale-[1.05]">
+                {/* Top Section */}
+                <div
+                    className="relative h-[150px] rounded-md flex flex-col"
+                    style={{
+                        backgroundImage: "url('/echiesta.jpeg')",
+                    }}
+                >
+                    {/* Skewed Border */}
+                    <div className="relative h-[30px] w-[130px] bg-[#ffe0e0] rounded-br-md skew-x-[-12deg] shadow-[-10px_-10px_0_0_#ffe0e0]">
+                        <div className="absolute top-0 -right-[15px] w-[15px] h-[15px] bg-transparent rounded-tl-md shadow-[-5px_-5px_0_2px_#ffe0e0]" />
+                    </div>
+                    {/* Top-left Corner Bubble */}
+                    <div className="absolute top-[30px] left-0 w-[15px] h-[15px] bg-transparent rounded-tl-md shadow-[-5px_-5px_0_2px_#ffe0e0]" />
+
+                    {/* Icons */}
+                    <div className="absolute top-0 w-full h-[30px] flex justify-between items-center px-[15px]">
+                        {/* Logo */}
+                        <div className="h-full flex items-center">
+                            <IoLogoCodepen
+                                size={22}
+                                className="fill-black transition"
+                            />
+                        </div>
+
+                        {/* Social Icons */}
+                        <div className="h-full flex items-center gap-2">
+                            <FaLinkedin
+                                size={18}
+                                className=" fill-[#1b233d] hover:fill-white transition"
+                            />
+                            <FaInstagram
+                                size={18}
+                                className=" fill-[#1b233d] hover:fill-white transition"
+                            />
+                            <FaTwitter
+                                size={18}
+                                className="fill-[#1b233d] hover:fill-white transition"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="mt-[15px] px-[5px] py-[10px]">
+                    <span className="block text-[17px] font-bold text-black text-center tracking-widest">
+                        Google Developer Student Club
+                    </span>
+
+                    <div className="flex justify-between mt-[20px] text-black text-center text-xs">
+                        <div className="flex-1 px-1">
+                            <span className="block text-[12px]">2626</span>
+                            <span className="text-[9px]">UI elements</span>
+                        </div>
+                        <div className="flex-1 border-x border-white/10 px-1">
+                            <span className="block text-[12px]">100%</span>
+                            <span className="text-[9px]">Free for use</span>
+                        </div>
+                        <div className="flex-1 px-1">
+                            <span className="block text-[12px]">38,631</span>
+                            <span className="text-[9px]">Contributers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };

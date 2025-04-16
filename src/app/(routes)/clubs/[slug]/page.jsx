@@ -9,7 +9,7 @@ import { FaTwitter } from 'react-icons/fa';
 import Link from 'next/link';
 import { fetchClubEvents } from '@/actions/events/fetchEvents';
 import { useSession } from 'next-auth/react';
-import { getUser } from '@/actions/users/getUser';
+import { getSpecificUsers, getUser } from '@/actions/users/getUser';
 import { joinClub } from '@/actions/clubs/joinClub';
 
 const Page = ({ params }) => {
@@ -19,25 +19,29 @@ const Page = ({ params }) => {
     const [club, setClub] = useState(null);
     const [events, setEvents] = useState([]);
     const [user, setUser] = useState([]);
+    const [admins, setAdmins] = useState([]);
 
     useEffect(() => {
-        async function getClub() {
+        async function fetchData() {
             const [club, events] = await Promise.all([
                 getClubs(decodedSlug),
                 fetchClubEvents(decodedSlug),
             ]);
             if (club) {
                 setClub(club[0]);
+                const response = await getSpecificUsers(club[0].adminId);
+                if (response.success) {
+                    setAdmins(response.users);
+                }
             } else {
                 toast.error("Club can't be load this time, try again later :(");
             }
             if (events) {
-                console.log('events:', events);
                 setEvents(events);
             }
         }
 
-        getClub();
+        fetchData();
     }, [decodedSlug]);
 
     useEffect(() => {
@@ -75,7 +79,7 @@ const Page = ({ params }) => {
                         </p>
                     </div>
                     {!(user?.clubId?.id === decodedSlug) ? (
-                        user?.role === 'student' ? (
+                        user?.role === 'student' || !user?.clubId?.id ? (
                             <button
                                 onClick={async () => {
                                     if (!session?.user?.email) {
@@ -179,7 +183,7 @@ const Page = ({ params }) => {
                             </h3>
 
                             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {club.adminId.map((admin) => (
+                                {admins.map((admin) => (
                                     <div
                                         key={admin.email}
                                         className="relative group overflow-hidden rounded-sm shadow-md w-56 h-56"
