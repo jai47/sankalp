@@ -129,16 +129,9 @@ const Navbar = () => {
                     ) : (
                         <Link
                             href="/dashboard"
-                            className="flex items-center space-x-5"
+                            className="flex items-center space-x-5 text-sm rounded text-red px-4 py-2 bg-red-50 border border-white hover:text-red-500 hover:border-red-500"
                         >
-                            <img
-                                src={session?.user.image}
-                                alt="user"
-                                className="w-8 h-8 rounded-full"
-                            />
-                            <span className="text-gray-500 hover:text-red-500">
-                                {session?.user.name}
-                            </span>
+                            Dashboard
                         </Link>
                     )}
                 </div>

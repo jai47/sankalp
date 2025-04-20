@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import HeroTimeRemaining from '@/components/Events/timeRemaining';
 import BookmarkButton from '@/components/Events/Bookmark';
 import { FaCheck } from 'react-icons/fa';
+import MultiSection from '@/components/Events/Multisection';
 
 // function ImageGrid() {
 //     const images = [
@@ -120,7 +121,7 @@ const Page = ({ params }) => {
 
     return !loading ? (
         <div className="w-screen h-fit flex flex-col items-center gap-10">
-            <div className="relative w-full h-[55vh]">
+            <div className="relative w-full h-[60vh]">
                 <Image
                     src={event.cover}
                     alt={event.name}
@@ -238,18 +239,10 @@ const Page = ({ params }) => {
                 </div>
             </div>
             <div className="w-11/12 h-fit flex flex-col items-center transform -translate-y-14">
-                <div className="w-11/12">
-                    <p className="text-lg font-light text-gray-400 flex gap-10">
-                        <span id="details">Details</span>
-                        <span>Gallery</span>
-                        <span>Gallery</span>
-                        <span>Gallery</span>
-                    </p>
-                </div>
-                <div className="h-[1px] w-11/12 bg-gray-400 mt-2" />
-                <div className="w-11/12">{event.description}</div>
+                <MultiSection details={event} />
+
                 <div className="w-11/12 flex flex-col gap-3 mt-10">
-                    <span className="w-full h-[1px] border" />
+                    <span className="w-full h-[1px] bg-gray-400" />
                     <div className="flex w-full justify-between">
                         <div className="flex gap-4">
                             <div className="hover:text-red-500 cursor-pointer">
@@ -263,10 +256,10 @@ const Page = ({ params }) => {
                             </div>
                         </div>
                         <div className="flex justify-center items-center gap-2 text-sm capitalize text-gray-500">
-                            <span>{event.status}</span>
+                            <span>{event.clubName}</span>
                         </div>
                     </div>
-                    <span className="w-full h-[1px] border" />
+                    <span className="w-full h-[1px] bg-gray-400" />
                     <div className="flex justify-between text-sm text-gray-500">
                         <div className="flex gap-4">
                             <span>{event.attendees?.length} attendees</span>

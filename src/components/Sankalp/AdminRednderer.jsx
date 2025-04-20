@@ -36,24 +36,27 @@ const AdminRednderer = ({ user, club }) => {
         getClubEvents();
     }, [club]);
 
-    return (
-        <>
-            {section === 'Dashboard' && <Dashboard user={user} club={club} />}
-            {section === 'Club' && (
-                <Club user={user} club={club} clubEvents={clubEvents} />
-            )}
-            {section === 'Blogs' && <Blogs />}
-            {section === 'Members' && (
+    switch (section) {
+        case 'Dashboard':
+            return <Dashboard user={user} club={club} />;
+        case 'Club':
+            return <Club user={user} club={club} clubEvents={clubEvents} />;
+        case 'Blogs':
+            return <Blogs />;
+        case 'Members':
+            return (
                 <Members
                     user={user}
                     club={club}
                     members={members}
                     admins={admins}
                 />
-            )}
-            {section === 'Chat' && <Chat />}
-        </>
-    );
+            );
+        case 'Chat':
+            return <Chat />;
+        default:
+            return <Dashboard user={user} club={club} />;
+    }
 };
 
 export default AdminRednderer;

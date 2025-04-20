@@ -17,7 +17,7 @@ const Home = () => {
         async function fetchData() {
             try {
                 const response = await fetch('/api/events');
-                const data = await response.json();
+                const data = await response?.json();
                 if (data.body?.events) {
                     setevents(data.body?.events);
                 }
@@ -32,7 +32,7 @@ const Home = () => {
         <>
             {/* Parallax Background */}
             <main
-                className="relative overflow-hidden select-none"
+                className="relative overflow-hidden select-none h-"
                 style={{
                     height: 'calc(100vh - 12rem)',
                 }}
@@ -52,7 +52,7 @@ const Home = () => {
                         style={{ filter: 'grayscale(60%)' }}
                     />
                 </div>
-                <div className="flex flex-col items-center justify-center gap-4 absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div className="w-full flex flex-col items-center justify-center gap-4 absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="text-sm flex items-center justify-center gap-4">
                         <span className="block w-8 h-[2px] bg-red-500" />
                         <span className="font-semibold">WELCOME TO THE</span>

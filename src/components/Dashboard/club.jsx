@@ -14,7 +14,7 @@ const Club = ({ user, club }) => {
         return (
             <div className="flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-2 rounded-full animate-spin border-gray-400 border-b-white"></div>
+                    <div className="w-12 h-12 border-2 rounded-full animate-spin border-gray-400 border-b-gray-100"></div>
                     <p className="text-gray-600 text-sm">
                         Loading, please wait...
                     </p>

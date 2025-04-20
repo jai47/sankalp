@@ -38,16 +38,16 @@ const Profile = ({ user }) => {
     };
 
     return (
-        <div className="w-full h-full bg-white p-6 rounded-xl shadow-xl">
+        <div className="w-full h-full bg-white p-6 shadow-xl">
             {/* Header with Cover and Profile Image */}
             <div className="relative mb-24">
                 <Parallex
                     image="/bg1.jpeg"
                     desc="View all your profile details"
                     heading="My Profile"
-                    className="h-[25vh] w-full rounded-xl"
+                    className="h-[25vh] w-full rounded"
                 />
-                <div className="group w-36 h-36 absolute bottom-[-70px] left-24 transform -translate-x-1/2">
+                <div className="group w-44 h-44 absolute bottom-[-85px] left-32 transform -translate-x-1/2">
                     <img
                         src={imagePreview || userData?.image}
                         alt="Profile"
@@ -69,7 +69,7 @@ const Profile = ({ user }) => {
             </div>
 
             {/* User Info Card */}
-            <div className="w-full bg-gray-50 rounded-xl p-6 shadow flex flex-col md:flex-row gap-8">
+            <div className="w-full bg-gray-50 rounded p-6 shadow flex flex-col md:flex-row gap-8">
                 <div className="flex flex-col gap-3 text-gray-800 w-full md:w-1/2">
                     <h2 className="text-2xl font-semibold">
                         {userData?.name?.split(' ')[1] || 'User'}

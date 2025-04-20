@@ -13,7 +13,7 @@ export async function POST(req, res) {
             eventId,
             {
                 $addToSet: {
-                    registrations: { userId: userId },
+                    registrations: userId,
                 },
             },
             { new: true }

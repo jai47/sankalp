@@ -32,7 +32,6 @@ const Overview = ({ section, user }) => {
                 setClub(clubData?.[0] || null);
                 setClubEvents(events || []);
                 setRegisteredEvents(enrolledEvents || []);
-                console.log(enrolledEvents);
             } catch (error) {
                 console.error('Error fetching club data or events:', error);
             }

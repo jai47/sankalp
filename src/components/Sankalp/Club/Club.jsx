@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import EventDetails from './EventDetails';
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, onClose, setEvent }) => {
     return (
         <div className="bg-white rounded-md overflow-hidden shadow-md transition hover:shadow-lg border border-gray-200 flex flex-col">
             {/* Cover Image with Image component */}
@@ -51,7 +52,13 @@ const EventCard = ({ event }) => {
                 </div>
 
                 {/* Button */}
-                <button className="mt-4 w-full py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-all">
+                <button
+                    onClick={() => {
+                        setEvent(event);
+                        onClose();
+                    }}
+                    className="mt-4 w-full py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-all"
+                >
                     View Details
                 </button>
             </div>
@@ -64,7 +71,8 @@ const Club = ({ user, club, clubEvents }) => {
     const [allEvents, setAllEvents] = useState([]);
     const [eventDetails, setEventDetails] = useState({});
     const [disabled, setDisabled] = useState(false);
-
+    const [showEventModal, setEventModal] = useState(false);
+    const [event, setEvent] = useState({});
     useEffect(() => {
         //updating states with the props passed from the parent component
         setAllEvents(clubEvents);
@@ -115,7 +123,7 @@ const Club = ({ user, club, clubEvents }) => {
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while creating the event.');
+            toast.error('An error occurred while creating the event.');
         } finally {
             setDisabled(false);
         }
@@ -123,32 +131,46 @@ const Club = ({ user, club, clubEvents }) => {
 
     return (
         <div className="h-screen flex flex-col">
-            Upcomming Events
+            {showEventModal && (
+                <EventDetails
+                    event={event}
+                    onClose={() => setEventModal(false)}
+                />
+            )}
+            <h1 className="text-2xl font-bold text-center my-4">
+                Upcomming Events
+            </h1>
             {allEvents.length > 0 ? (
                 <div className="w-full grid grid-cols-5 p-4 gap-4">
                     {allEvents
                         .filter((event) => event.status === 'upcoming')
                         .map((event, index) => (
-                            <EventCard key={index} event={event} />
+                            <EventCard
+                                key={index}
+                                event={event}
+                                onClose={() => setEventModal(true)}
+                                setEvent={(e) => setEvent(e)}
+                            />
                         ))}
                 </div>
             ) : (
                 <div className="text-center">No events available</div>
             )}
-            <div
-                className="p-10 bg-green-200 rounded hover:bg-green-100 cursor-pointer"
-                onClick={() => setShowModal(true)}
-            >
-                Create Event
-            </div>
-            Past Events
+            <h1 className="text-2xl font-bold text-center my-4">Past Events</h1>
             <div className="w-full grid grid-cols-5 p-4 gap-4">
                 {allEvents
                     .filter((event) => event.status !== 'upcoming')
                     .map((event, index) => (
-                        <EventCard key={index} event={event} />
+                        <EventCard
+                            key={index}
+                            event={event}
+                            onClose={() => setEventModal(true)}
+                            setEvent={(e) => setEvent(e)}
+                        />
                     ))}
             </div>
+
+            {/* modal for creating event */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-5 rounded">
@@ -267,6 +289,12 @@ const Club = ({ user, club, clubEvents }) => {
                     </div>
                 </div>
             )}
+            <button
+                className="fixed right-10 bottom-10 w-fit h-16 py-2 px-5 bg-purple-200 rounded hover:bg-purple-100"
+                onClick={() => setShowModal(true)}
+            >
+                Create Event
+            </button>
         </div>
     );
 };

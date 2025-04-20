@@ -1,9 +1,10 @@
 'use client';
 import Link from 'next/link';
-import Image from '../Image';
 import useParams from '@/hooks/useParams';
+import Image from 'next/image';
 
-const MultiSection = ({ details, gallery }) => {
+const MultiSection = ({ details }) => {
+    const gallery = details.image;
     const querySection = useParams('section') || 'Details';
 
     // Define the content for each section
@@ -11,23 +12,7 @@ const MultiSection = ({ details, gallery }) => {
         switch (querySection) {
             case 'Details':
                 return (
-                    <div className="mt-6">
-                        {Array.isArray(details) && details.length > 0 ? (
-                            details.map((paragraph, index) => (
-                                <p
-                                    key={index}
-                                    className="leading-relaxed text-sm sm:text-base mb-4"
-                                    dangerouslySetInnerHTML={{
-                                        __html: paragraph,
-                                    }}
-                                ></p>
-                            ))
-                        ) : (
-                            <p className="text-background text-sm sm:text-base">
-                                No details available.
-                            </p>
-                        )}
-                    </div>
+                    <div className="w-11/12 mt-10">{details.description}</div>
                 );
             case 'Gallery':
                 return (
@@ -70,64 +55,34 @@ const MultiSection = ({ details, gallery }) => {
     };
 
     return (
-        <div className="mt-8 px-4 sm:px-6 lg:px-16">
+        <div className="w-11/12">
             <div className="w-11/12">
-                <p className="text-lg font-light text-gray-400 flex gap-10">
+                <div className="text-lg font-light text-gray-400 flex gap-10">
                     <Link
-                        id="details"
                         href="?section=Details"
                         scroll={false}
-                        className={`font-bold pb-2 ${
+                        className={`${
                             querySection === 'Details'
-                                ? 'text-background border-b-2 border-background dark:text-primary'
-                                : 'text-gray-600 hover:text-gray-500'
+                                ? 'text-gray-600 hover:text-gray-500'
+                                : 'text-background border-background dark:text-primary'
                         }`}
                     >
-                        Details
+                        <span id="details">Details</span>
                     </Link>
                     <Link
                         href="?section=Gallery"
                         scroll={false}
-                        className={`font-bold pb-2 ${
+                        className={`${
                             querySection === 'Gallery'
-                                ? 'text-background border-b-2 border-background dark:text-primary'
-                                : 'text-gray-600 hover:text-gray-500'
+                                ? 'text-gray-600 hover:text-gray-500'
+                                : 'text-background border-background dark:text-primary'
                         }`}
                     >
                         Gallery
                     </Link>
-                </p>
-            </div>
-            <div className="h-[1px] w-11/12 bg-gray-400 mt-2" />
-
-            <div className="border-b">
-                <div className="flex flex-wrap gap-4 sm:gap-6">
-                    <Link
-                        href="?section=Details"
-                        scroll={false}
-                        className={`font-bold pb-2 ${
-                            querySection === 'Details'
-                                ? 'text-background border-b-2 border-background dark:text-primary'
-                                : 'text-gray-600 hover:text-gray-500'
-                        }`}
-                    >
-                        Details
-                    </Link>
-                    {sponsors && (
-                        <Link
-                            href="?section=Gallery"
-                            scroll={false}
-                            className={`font-bold pb-2 ${
-                                querySection === 'Sponsors'
-                                    ? 'text-background border-b-2 border-background dark:text-primary'
-                                    : 'text-gray-600 hover:text-gray-500'
-                            }`}
-                        >
-                            Sponsors
-                        </Link>
-                    )}
                 </div>
             </div>
+            <div className="h-[1px] w-full bg-gray-400 mt-2" />
             {renderSectionContent()}
         </div>
     );
