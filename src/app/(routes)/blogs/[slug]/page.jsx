@@ -29,9 +29,11 @@ const Page = ({ params }) => {
         })
             .then((res) => res.json())
             .then((data) => {
+                console.log(data);
                 if (data.body.success) {
                     setData(data.body.existingBlog);
                 } else {
+                    console.log(decodedSlug);
                     console.error('Failed to fetch blogs');
                 }
             });

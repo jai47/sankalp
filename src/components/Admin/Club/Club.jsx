@@ -2,10 +2,14 @@ import { getClubs } from '@/actions/clubs/getClubs';
 import Parallex from '@/components/Parallex';
 import React, { useEffect } from 'react';
 import Card from './Card';
+import { getUser } from '@/actions/users/getUser';
+import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 const Club = () => {
     const [club, setClub] = React.useState([]); //existing clubs
     const [showModal, setShowModal] = React.useState(false);
+    const [users, setUsers] = React.useState([]); //users
     const [newClubDetails, setNewClubDetails] = React.useState({
         name: '',
         description: '',
@@ -17,23 +21,34 @@ const Club = () => {
         website: '',
         contactEmail: '',
         contactPhone: '',
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        linkedin: '',
+        socialMediaLinks: {
+            facebook: '',
+            twitter: '',
+            instagram: '',
+            linkedin: '',
+        },
         category: '',
         logo: '',
         banner: '',
+        adminId: [],
     });
 
-    // const club = await getClubs('Tech Innovators Club');
-    async function fetchClubs() {
-        const club = await getClubs();
-        setClub(club);
-    }
+    useEffect(() => {
+        async function fetchClubs() {
+            const club = await getClubs();
+            setClub(club);
+        }
+        fetchClubs();
+    }, []);
 
     useEffect(() => {
-        fetchClubs();
+        async function users() {
+            const fetchedUsers = await getUser();
+            if (fetchedUsers) {
+                setUsers(fetchedUsers);
+            }
+        }
+        users();
     }, []);
 
     const handleChange = (e) => {
@@ -47,7 +62,7 @@ const Club = () => {
         e.preventDefault();
 
         if (!newClubDetails.name) {
-            alert('Club name is required!');
+            toast.error('Club name is required!');
             return;
         }
 
@@ -78,16 +93,17 @@ const Club = () => {
                     website: '',
                     contactEmail: '',
                     contactPhone: '',
-                    facebook: '',
-                    twitter: '',
-                    instagram: '',
-                    linkedin: '',
+                    socialMediaLinks: {
+                        facebook: '',
+                        twitter: '',
+                        instagram: '',
+                        linkedin: '',
+                    },
                     category: '',
                     banner: '',
                 });
 
                 setShowModal(false);
-                if (fetchClubs) fetchClubs();
             } else {
                 alert(res.message || 'Error creating club');
             }
@@ -106,22 +122,11 @@ const Club = () => {
             />
             <div className="flex flex-col items-center justify-center mt-10">
                 <div className="flex flex-wrap justify-center gap-5">
-                    {club.map((item) => (
-                        <Card club={item} key={item._id} />
-                        // <div
-                        //     key={item._id}
-                        //     className="bg-white shadow-md rounded-lg p-4 m-4"
-                        // >
-                        //     <h2 className="text-xl font-bold">{item.name}</h2>
-                        //     <p>{item.description}</p>
-                        //     <img src={item.logo} width={50} />
-                        //     <p>Members: {item.members.length}</p>
-                        //     <p>
-                        //         Created At:{' '}
-                        //         {new Date(item.createdAt).toLocaleDateString()}
-                        //     </p>
-                        // </div>
-                    ))}
+                    {Array.isArray(club) && club.length > 0 ? (
+                        club.map((item) => <Card club={item} key={item._id} />)
+                    ) : (
+                        <p>No clubs found</p>
+                    )}
                 </div>
             </div>
             {showModal && (
@@ -218,34 +223,83 @@ const Club = () => {
                                 type="url"
                                 name="facebook"
                                 placeholder="Facebook Link"
-                                value={newClubDetails.facebook}
-                                onChange={handleChange}
+                                value={newClubDetails.socialMediaLinks.facebook}
+                                onChange={(e) => {
+                                    setNewClubDetails({
+                                        ...newClubDetails,
+                                        socialMediaLinks: {
+                                            ...newClubDetails.socialMediaLinks,
+                                            facebook: e.target.value,
+                                        },
+                                    });
+                                }}
                                 className="input-field"
                             />
                             <input
                                 type="url"
                                 name="twitter"
                                 placeholder="Twitter Link"
-                                value={newClubDetails.twitter}
-                                onChange={handleChange}
+                                value={newClubDetails.socialMediaLinks.twitter}
+                                onChange={(e) => {
+                                    setNewClubDetails({
+                                        ...newClubDetails,
+                                        socialMediaLinks: {
+                                            ...newClubDetails.socialMediaLinks,
+                                            twitter: e.target.value,
+                                        },
+                                    });
+                                }}
                                 className="input-field"
                             />
                             <input
                                 type="url"
                                 name="instagram"
                                 placeholder="Instagram Link"
-                                value={newClubDetails.instagram}
-                                onChange={handleChange}
+                                value={
+                                    newClubDetails.socialMediaLinks.instagram
+                                }
+                                onChange={(e) => {
+                                    setNewClubDetails({
+                                        ...newClubDetails,
+                                        socialMediaLinks: {
+                                            ...newClubDetails.socialMediaLinks,
+                                            instagram: e.target.value,
+                                        },
+                                    });
+                                }}
                                 className="input-field"
                             />
                             <input
                                 type="url"
                                 name="linkedin"
                                 placeholder="LinkedIn Link"
-                                value={newClubDetails.linkedin}
-                                onChange={handleChange}
+                                value={newClubDetails.socialMediaLinks.linkedin}
+                                onChange={(e) => {
+                                    setNewClubDetails({
+                                        ...newClubDetails,
+                                        socialMediaLinks: {
+                                            ...newClubDetails.socialMediaLinks,
+                                            linkedin: e.target.value,
+                                        },
+                                    });
+                                }}
                                 className="input-field"
                             />
+                            <select
+                                name="adminId"
+                                value={newClubDetails.adminId}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                                <option value="" disabled>
+                                    Select Admin
+                                </option>
+                                {users.map((user) => (
+                                    <option key={user._id} value={user.email}>
+                                        {user.name} ({user.email})
+                                    </option>
+                                ))}
+                            </select>
                             <select
                                 name="category"
                                 value={newClubDetails.category}
@@ -266,21 +320,100 @@ const Club = () => {
                                 ))}
                             </select>
                             <input
-                                type="url"
-                                name="logo"
-                                placeholder="Logo URL"
-                                value={newClubDetails.logo}
-                                onChange={handleChange}
+                                type="file"
+                                accept="image/*"
                                 className="input-field"
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file) return;
+
+                                    const formData = new FormData();
+                                    formData.append('image', file);
+
+                                    try {
+                                        const response = await fetch(
+                                            'http://localhost:3001/upload',
+                                            {
+                                                method: 'POST',
+                                                body: formData,
+                                            }
+                                        );
+
+                                        const data = await response.json();
+
+                                        setNewClubDetails((prev) => ({
+                                            ...prev,
+                                            logo: data.url,
+                                        }));
+                                        toast.success(
+                                            'Image uploaded successfully!'
+                                        );
+                                    } catch (err) {
+                                        console.error(
+                                            'Image upload failed:',
+                                            err
+                                        );
+                                    }
+                                }}
+                                disabled={newClubDetails.logo}
                             />
+                            {newClubDetails.logo && (
+                                <Image
+                                    src={newClubDetails.logo}
+                                    alt="Event Cover"
+                                    width={200}
+                                    height={200}
+                                    className="w-full h-40 object-cover mb-2 rounded"
+                                />
+                            )}
+
                             <input
-                                type="url"
-                                name="banner"
-                                placeholder="Banner URL"
-                                value={newClubDetails.banner}
-                                onChange={handleChange}
+                                type="file"
+                                accept="image/*"
                                 className="input-field"
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file) return;
+
+                                    const formData = new FormData();
+                                    formData.append('image', file);
+
+                                    try {
+                                        const response = await fetch(
+                                            'http://localhost:3001/upload',
+                                            {
+                                                method: 'POST',
+                                                body: formData,
+                                            }
+                                        );
+
+                                        const data = await response.json();
+
+                                        setNewClubDetails((prev) => ({
+                                            ...prev,
+                                            banner: data.url,
+                                        }));
+                                        toast.success(
+                                            'Image uploaded successfully!'
+                                        );
+                                    } catch (err) {
+                                        console.error(
+                                            'Image upload failed:',
+                                            err
+                                        );
+                                    }
+                                }}
+                                disabled={newClubDetails.banner}
                             />
+                            {newClubDetails.banner && (
+                                <Image
+                                    src={newClubDetails.banner}
+                                    alt="Event Cover"
+                                    width={200}
+                                    height={200}
+                                    className="w-full h-40 object-cover mb-2 rounded"
+                                />
+                            )}
                             <button
                                 type="submit"
                                 className="md:col-span-2 bg-gradient-to-r from-rose-500 to-green-500 text-white font-semibold py-2 px-4 rounded-md hover:opacity-90 transition-all duration-300"

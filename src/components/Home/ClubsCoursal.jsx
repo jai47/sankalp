@@ -6,17 +6,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const ClubScroller = () => {
     const [index, setIndex] = useState(0);
     const [clubs, setClubs] = useState([]);
 
-    async function fetchClub() {
-        const clubs = await getClubs();
-        setClubs(clubs);
-    }
-
     useEffect(() => {
+        async function fetchClub() {
+            const clubs = await getClubs();
+            if (Array.isArray(clubs)) {
+                setClubs(clubs);
+            } else {
+                toast.error('Error occured fetching Clubs');
+                setClubs([]); // prevent crashes
+            }
+        }
         fetchClub();
     }, []);
 
@@ -33,7 +38,9 @@ const ClubScroller = () => {
     const y = useParallax();
     const scale = 1 + y / 1000;
 
-    if (clubs.length === 0) return null;
+    if (!Array.isArray(clubs) || clubs.length === 0) {
+        return <h1>No clubs</h1>;
+    }
 
     const currentClub = clubs[index];
 

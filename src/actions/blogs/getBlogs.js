@@ -1,3 +1,4 @@
+'use server';
 const { connectDB } = require('@/lib/db');
 const { blogModel } = require('@/models/Blog');
 
@@ -23,9 +24,7 @@ export async function fetchClubBlogs(clubId, blogId = null) {
         }
 
         // If blogId is provided, find only that blog, otherwise fetch all club blogs
-        const query = blogId
-            ? { _id: blogId }
-            : { _id: { $in: club.blogs } };
+        const query = blogId ? { _id: blogId } : { _id: { $in: club.blogs } };
         const blogs = await blogModel.find(query);
 
         return JSON.parse(JSON.stringify(blogs));
@@ -36,6 +35,3 @@ export async function fetchClubBlogs(clubId, blogId = null) {
 }
 
 export default getBlogs;
-
-
-

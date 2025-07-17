@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import useParams from '@/hooks/useParams';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { IoBookmarks } from 'react-icons/io5';
 import {
     FaUser,
     FaCalendarAlt,
@@ -122,6 +123,11 @@ const Page = () => {
                             section: 'Certificates',
                             icon: <FaCertificate />,
                         },
+                        {
+                            name: 'Bookmarks',
+                            section: 'Bookmarks',
+                            icon: <IoBookmarks />,
+                        },
                     ].map((item) => (
                         <Link
                             key={item.section}
@@ -148,7 +154,7 @@ const Page = () => {
                     ))}
                     <div
                         key={'Chat Room'}
-                        href={`?section=chat`}
+                        href={`?section=Chat`}
                         // scroll={false}
                         className={`${
                             section == 'chat' && 'bg-red-200 text-red-500'

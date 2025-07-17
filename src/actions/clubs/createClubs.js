@@ -1,3 +1,8 @@
+// import { auth } from '../../../auth';
+// const session = await auth();
+// console.log('Session:', session);
+
+'use server';
 import { connectDB } from '@/lib/db';
 import { clubModel } from '@/models/Club';
 

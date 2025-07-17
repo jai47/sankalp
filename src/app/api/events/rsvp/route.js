@@ -7,13 +7,13 @@ export async function POST(req, res) {
     try {
         await connectDB();
         const body = await req.json();
-        const { eventId, userId } = body;
+        const { eventId, userId, userEmail } = body;
 
         const event = await eventModel.findByIdAndUpdate(
             eventId,
             {
                 $addToSet: {
-                    registrations: userId,
+                    registrations: userEmail,
                 },
             },
             { new: true }

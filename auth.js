@@ -12,11 +12,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     callbacks: {
         async signIn({ user, account, profile }) {
-            // const allowedDomain = '@eitfaridabad.co.in';
-            // if (!user.email.endsWith(allowedDomain)) {
-            //     console.log('❌ Access denied: Email not from EIT Faridabad');
-            //     return `/auth/error?error=Use college email to login`; // Redirect to an error page
-            // }
+            const allowedDomain = '@eitfaridabad.co.in';
+            if (!user.email.endsWith(allowedDomain)) {
+                console.log('❌ Access denied: Email not from EIT Faridabad');
+                return `/auth/error?error=Use college email to login`; // Redirect to an error page
+            }
 
             // Check if user exists in DB
             let existingUser = await getUserAuth(user);

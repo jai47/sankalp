@@ -8,6 +8,8 @@ import {
 import Image from 'next/image';
 import { leaveClub } from '@/actions/clubs/joinClub';
 import { getSpecificUsers } from '@/actions/users/getUser';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 const Club = ({ user, club }) => {
     if (!club)
@@ -60,21 +62,22 @@ const Club = ({ user, club }) => {
     }, []);
 
     return (
-        <div className="p-6 md:p-10 max-w-6xl mx-auto grid md:grid-cols-3 gap-10">
+        <div className="p-4 sm:p-6 md:p-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
             {/* Left Column */}
-            <div className="col-span-2 space-y-6">
-                {/* Admin & Members */}
+            <div className="md:col-span-2 space-y-6">
+                {/* Admin Section */}
                 <div className="bg-white p-4 rounded-lg shadow">
                     <h2 className="font-semibold text-lg mb-2">Admin</h2>
                     {adminId?.map((admin, idx) => (
-                        <p key={idx}>
+                        <p key={idx} className="text-sm md:text-base">
                             {admin.name} -{' '}
                             <span className="text-blue-600">{admin.email}</span>
                         </p>
                     ))}
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow mt-4">
+                {/* Members Section */}
+                <div className="bg-white p-4 rounded-lg shadow">
                     <h2 className="font-semibold text-lg mb-2">
                         Members ({members.length})
                     </h2>
@@ -92,33 +95,36 @@ const Club = ({ user, club }) => {
             </div>
 
             {/* Right Column */}
-            <div className="col-span-1 space-y-4">
-                <Image
-                    src={logo}
-                    alt={name}
-                    width={150}
-                    height={150}
-                    className="rounded-xl object-cover"
-                />
-                <h1 className="text-3xl font-bold">{name}</h1>
-                <p className="text-gray-600 mt-2 text-sm">{description}</p>
-                <p className="text-sm mt-1 text-gray-500">
-                    Category: {category}
-                </p>
+            <div className="space-y-4">
+                <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                    <Image
+                        src={logo}
+                        alt={name}
+                        width={150}
+                        height={150}
+                        className="rounded-xl object-cover"
+                    />
+                    <h1 className="text-2xl md:text-3xl font-bold mt-2">
+                        {name}
+                    </h1>
+                    <p className="text-gray-600 mt-2 text-sm">{description}</p>
+                    <p className="text-sm mt-1 text-gray-500">
+                        Category: {category}
+                    </p>
+                </div>
 
-                {/* Vision, Mission, Contact + Social */}
                 <div className="space-y-4">
                     <div>
                         <h2 className="font-semibold text-lg mb-1">Mission</h2>
-                        <p>{mission}</p>
+                        <p className="text-sm">{mission}</p>
                     </div>
                     <div>
                         <h2 className="font-semibold text-lg mb-1">Vision</h2>
-                        <p>{vision}</p>
+                        <p className="text-sm">{vision}</p>
                     </div>
                     <div>
                         <h2 className="font-semibold text-lg mb-1">Contact</h2>
-                        <p>
+                        <p className="text-sm">
                             Email:{' '}
                             <a
                                 href={`mailto:${contactEmail}`}
@@ -127,7 +133,7 @@ const Club = ({ user, club }) => {
                                 {contactEmail}
                             </a>
                         </p>
-                        <p>
+                        <p className="text-sm">
                             Phone:{' '}
                             <a
                                 href={`tel:${contactPhone}`}
@@ -141,50 +147,53 @@ const Club = ({ user, club }) => {
                         <h2 className="font-semibold text-lg mb-2">
                             Social Media
                         </h2>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 justify-center md:justify-start">
                             {socialMediaLinks?.facebook && (
-                                <a
+                                <Link
                                     href={socialMediaLinks.facebook}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
                                     <FaFacebookF className="hover:text-blue-600" />
-                                </a>
+                                </Link>
                             )}
                             {socialMediaLinks?.twitter && (
-                                <a
+                                <Link
                                     href={socialMediaLinks.twitter}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
                                     <FaTwitter className="hover:text-blue-500" />
-                                </a>
+                                </Link>
                             )}
                             {socialMediaLinks?.instagram && (
-                                <a
+                                <Link
                                     href={socialMediaLinks.instagram}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
                                     <FaInstagram className="hover:text-pink-500" />
-                                </a>
+                                </Link>
                             )}
                             {socialMediaLinks?.linkedin && (
-                                <a
+                                <Link
                                     href={socialMediaLinks.linkedin}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
                                     <FaLinkedinIn className="hover:text-blue-700" />
-                                </a>
+                                </Link>
                             )}
                         </div>
-                        <div className="w-full flex justify-end mt-4">
+
+                        <div className="w-full flex justify-center md:justify-end mt-4">
                             <button
                                 onClick={async () => {
                                     const res = await leaveClub(user[0]?._id);
                                     if (res.success) {
-                                        alert('Successfully left the club');
+                                        toast.success(
+                                            'Successfully left the club'
+                                        );
                                     }
                                 }}
                                 className="text-sm px-4 py-2 rounded-full bg-red-500 text-white"

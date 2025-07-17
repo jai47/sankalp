@@ -29,7 +29,6 @@ const AdminRednderer = ({ user, club }) => {
                 setAdmins(adminsData.users);
             }
             if (membersData.success) {
-                console.log(membersData);
                 setMembers(membersData.users);
             }
         };

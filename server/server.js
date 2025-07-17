@@ -35,6 +35,15 @@ app.use(
     })
 );
 
+app.use(
+    cors({
+        origin: 'http://localhost:3000', // or your frontend origin
+        methods: ['POST', 'GET'],
+        allowedHeaders: ['Content-Type'],
+        optionsSuccessStatus: 200,
+    })
+);
+
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -115,6 +124,23 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         console.error('Image processing error:', err);
         res.status(500).json({ error: 'Image processing failed' });
     }
+});
+
+//Delete endpoint
+app.delete('/delete/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(uploadDir, filename);
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'File not found' });
+    }
+
+    fs.unlinkSync(filePath);
+    res.status(200).json({ message: 'File deleted successfully' });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
 });
 
 // Error handling middleware

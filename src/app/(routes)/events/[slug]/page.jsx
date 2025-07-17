@@ -1,10 +1,8 @@
 'use client';
 import Image from 'next/image';
-import { HiUserCircle } from 'react-icons/hi2';
 import { FaFacebookF, FaMapMarkerAlt } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { FaLinkedinIn } from 'react-icons/fa';
-import { FcLike } from 'react-icons/fc';
 import React, { use } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer/footer';
@@ -188,6 +186,7 @@ const Page = ({ params }) => {
                                             body: JSON.stringify({
                                                 eventId: decodedSlug,
                                                 userId: session?.user?.id,
+                                                userEmail: session?.user?.email,
                                             }),
                                         }
                                     )
@@ -213,10 +212,14 @@ const Page = ({ params }) => {
                                 <span>Registered</span> <FaCheck />
                             </p>
                         )}
-                        <p>
-                            Already {event.registrations?.length} enrolled for
-                            this event
-                        </p>
+                        {event.registrations?.length == 0 ? (
+                            <p>Be the first to enroll for this event!</p>
+                        ) : (
+                            <p>
+                                Already {event.registrations?.length} enrolled
+                                for this event
+                            </p>
+                        )}
                         <div className="absolute top-5 flex flex-col gap-2">
                             <div>
                                 <span className="text-sm text-gray-400">

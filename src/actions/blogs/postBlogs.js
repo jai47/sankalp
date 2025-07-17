@@ -1,3 +1,8 @@
+// import { auth } from '../../../auth';
+// const session = await auth();
+// console.log('Session:', session);
+
+'use server';
 const { connectDB } = require('@/lib/db');
 const { blogModel } = require('@/models/Blog');
 

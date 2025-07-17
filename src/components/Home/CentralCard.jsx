@@ -26,7 +26,37 @@ export default function CentralCard({ items }) {
         return () => clearInterval(interval);
     }, [items]);
 
-    if (items.length === 0) return null; // Prevent rendering if no items
+    if (!Array.isArray(items) || items.length === 0) {
+        // 🔥 Show skeleton if no items
+        return (
+            <div className="flex border bg-white w-7/12 h-96 transform -translate-y-1/2 animate-pulse">
+                <div className="w-1/2 h-full bg-gray-300" />
+                <div className="w-1/2 flex flex-col justify-between p-6 px-8">
+                    <div className="flex flex-col space-y-6">
+                        <div className="flex items-center gap-2">
+                            <div className="w-10 h-10 bg-gray-300 rounded-full" />
+                            <div className="flex flex-col space-y-2">
+                                <div className="w-24 h-3 bg-gray-300 rounded" />
+                                <div className="w-16 h-2 bg-gray-300 rounded" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col space-y-4">
+                            <div className="w-3/4 h-5 bg-gray-300 rounded" />
+                            <div className="w-full h-3 bg-gray-300 rounded" />
+                            <div className="w-5/6 h-3 bg-gray-300 rounded" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <div className="h-[1px] w-full bg-gray-400" />
+                        <div className="flex justify-between">
+                            <div className="w-20 h-3 bg-gray-300 rounded" />
+                            <div className="w-20 h-3 bg-gray-300 rounded" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const event = items[index];
 

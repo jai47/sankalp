@@ -35,6 +35,9 @@ export async function fetchClubEvents(clubId, eventId = null) {
 
 export async function fetchRegisteredEvents(eventList) {
     try {
+        if (!eventList || eventList.length === 0 || eventList === null) {
+            return [];
+        }
         await connectDB();
 
         const events = await eventModel.find({ _id: { $in: eventList } });

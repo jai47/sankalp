@@ -59,35 +59,59 @@ const Home = () => {
                         <span className="block w-8 h-[2px] bg-red-500" />
                     </div>
                     <h1 className="text-5xl font-black">
-                        Echelon Institute of{' '}
-                        <span className="text-red-500">Technology</span>
+                        Vastav Incubatex & Entrepreneurship{' '}
+                        <span className="text-red-500">Foundation</span>
                     </h1>
                     <h1 className="text-8xl font-black">
                         SANK<span className="text-red-500">ALP</span>
                     </h1>
                     <p className="text-sm font-semibold">
-                        A subdivision of Echelon Institute of Technology
+                        A subdivision of VIEF
                     </p>
                 </div>
             </main>
             <section className="h-fit w-screen bg-white flex flex-col items-center gap-10 selection:bg-red-200">
                 <CentralCard items={events} />
                 <div className="flex justify-between items-center w-7/12 h-fit transform -translate-y-1/2">
-                    {events.length > 0 ? (
-                        events.slice(0, 3).map((event, index) => (
-                            <Card
-                                key={index}
-                                id={event._id}
-                                image={event.cover || '/default.jpg'} // Use a default image if not provided
-                                title={event.name}
-                                registration={event?.registrations?.length || 0}
-                                status={event.status || 0}
-                                venue={event.venue}
-                            />
-                        ))
-                    ) : (
-                        <p>No upcoming events</p>
-                    )}
+                    {events.length > 0
+                        ? events.slice(0, 3).map((event, index) => (
+                              <Card
+                                  key={index}
+                                  id={event._id}
+                                  image={event.cover || '/default.jpg'} // Use a default image if not provided
+                                  title={event.name}
+                                  registration={
+                                      event?.registrations?.length || 0
+                                  }
+                                  status={event.status || 0}
+                                  venue={event.venue}
+                              />
+                          ))
+                        : // Map 3 times for Skeleton
+                          Array.from({ length: 3 }).map((_, idx) => (
+                              <div
+                                  key={idx}
+                                  className="border h-80 w-[30%] animate-pulse cursor-wait"
+                              >
+                                  <div className="relative h-1/2 w-full bg-gray-300" />
+                                  <div className="h-1/2 w-full flex flex-col justify-center gap-4 p-4">
+                                      <div className="w-3/4 h-6 bg-gray-300 rounded" />
+                                      <div className="flex flex-col gap-2 text-[12px]">
+                                          <span className="block h-[1px] w-full bg-gray-400" />
+                                          <div className="flex justify-between">
+                                              <div className="flex justify-center items-center gap-2">
+                                                  <div className="w-20 h-3 bg-gray-300 rounded" />
+                                                  <div className="w-10 h-3 bg-gray-300 rounded" />
+                                              </div>
+                                              <div className="flex justify-center items-center gap-2">
+                                                  <div className="w-16 h-3 bg-gray-300 rounded" />
+                                                  <div className="w-4 h-4 bg-gray-300 rounded-full" />
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          ))}
                 </div>
             </section>
 

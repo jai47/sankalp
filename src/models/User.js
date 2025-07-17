@@ -30,15 +30,6 @@ const UserSchema = new mongoose.Schema({
     certificate: {
         type: Array,
     },
-    attendance: [
-        {
-            type: Object,
-            default: {
-                date: new Date.now(),
-                eventId: '',
-            },
-        },
-    ],
 });
 
 export const userModel =

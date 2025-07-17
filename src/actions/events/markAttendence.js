@@ -1,6 +1,7 @@
 'use server';
 import { connectDB } from '@/lib/db';
 import { eventModel } from '@/models/Event';
+import { userModel } from '@/models/User';
 
 export async function markAttendence(eventId, attendees) {
     try {
@@ -15,7 +16,11 @@ export async function markAttendence(eventId, attendees) {
         if (!event) {
             return { success: false, message: 'Event not found' };
         }
-        return JSON.parse(JSON.stringify(event));
+
+        return {
+            success: true,
+            message: 'Successfully marked attendance',
+        };
     } catch (e) {
         console.log('error', e);
         return { success: false, message: 'Failed to mark the attendance' };

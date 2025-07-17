@@ -9,6 +9,7 @@ import {
     fetchRegisteredEvents,
 } from '@/actions/events/fetchEvents';
 import { getClubs } from '@/actions/clubs/getClubs';
+import Bookmarks from './bookmarks';
 
 const Overview = ({ section, user }) => {
     const userData = user[0];
@@ -54,8 +55,10 @@ const Overview = ({ section, user }) => {
         case 'Club':
             return <Club user={user} club={club} />;
         case 'Certificates':
-            return <Certificates user={user} />;
-        case 'chat':
+            return <Certificates user={userData} />;
+        case 'Bookmarks':
+            return <Bookmarks />;
+        case 'Chat':
             return <Chat />;
         default:
             return null;

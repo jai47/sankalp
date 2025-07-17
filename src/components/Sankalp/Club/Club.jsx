@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import EventDetails from './EventDetails';
+import EventDetails from './modals/EventDetails';
 
 const EventCard = ({ event, onClose, setEvent }) => {
     return (
@@ -57,7 +57,7 @@ const EventCard = ({ event, onClose, setEvent }) => {
                         setEvent(event);
                         onClose();
                     }}
-                    className="mt-4 w-full py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-all"
+                    className="mt-4 w-full py-2 text-sm bg-purple-400 hover:bg-purple-500 text-white font-medium rounded-md transition-all"
                 >
                     View Details
                 </button>
@@ -137,6 +137,7 @@ const Club = ({ user, club, clubEvents }) => {
                     onClose={() => setEventModal(false)}
                 />
             )}
+
             <h1 className="text-2xl font-bold text-center my-4">
                 Upcomming Events
             </h1>
@@ -219,6 +220,7 @@ const Club = ({ user, club, clubEvents }) => {
                                 className="border p-2 mb-2 w-full"
                                 value={eventDetails.venue}
                                 onChange={(e) => {
+                                    console.log(eventDetails);
                                     setEventDetails({
                                         ...eventDetails,
                                         venue: e.target.value,
@@ -251,22 +253,49 @@ const Club = ({ user, club, clubEvents }) => {
                                 <option value="canceled">Canceled</option>
                             </select>
                             <input
-                                type="text"
-                                placeholder="Event Cover URL"
+                                type="file"
+                                accept="image/*"
                                 className="border p-2 mb-2 w-full"
-                                value={eventDetails.cover}
-                                onChange={(e) =>
-                                    setEventDetails({
-                                        ...eventDetails,
-                                        cover: e.target.value,
-                                    })
-                                }
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file) return;
+
+                                    const formData = new FormData();
+                                    formData.append('image', file);
+
+                                    try {
+                                        const response = await fetch(
+                                            'http://localhost:3001/upload',
+                                            {
+                                                method: 'POST',
+                                                body: formData,
+                                            }
+                                        );
+
+                                        const data = await response.json();
+
+                                        setEventDetails((prev) => ({
+                                            ...prev,
+                                            cover: data.url, // ← CORRECT key based on backend
+                                        }));
+                                        toast.success(
+                                            'Image uploaded successfully!'
+                                        );
+                                    } catch (err) {
+                                        console.error(
+                                            'Image upload failed:',
+                                            err
+                                        );
+                                    }
+                                }}
                                 disabled={disabled}
                             />
                             {eventDetails.cover && (
-                                <img
+                                <Image
                                     src={eventDetails.cover}
                                     alt="Event Cover"
+                                    width={200}
+                                    height={200}
                                     className="w-full h-40 object-cover mb-2 rounded"
                                 />
                             )}
