@@ -117,6 +117,46 @@ const Home = () => {
 
             {/* Clubs Section */}
 
+            <section className="h-fit w-screen bg-white flex flex-col items-center gap-10 selection:bg-red-200">
+                <div className="text-sm flex items-center justify-center gap-4">
+                    <span className="block w-8 h-[2px] bg-red-500" />
+                    <span className="font-semibold">CLUBS AT ECHELON</span>
+                    <span className="block w-8 h-[2px] bg-red-500" />
+                </div>
+                <h1 className="text-5xl font-black">Explore Our Clubs</h1>
+                <div>
+                    <p className="text-sm font-semibold">
+                        A subdivision of Echelon Institute of Technology
+                    </p>
+                </div>
+                <div className="flex flex-wrap justify-center items-center gap-10 w-11/12">
+                    <Card
+                        id="1"
+                        image="/club1.jpg"
+                        title="Tech Club"
+                        registration={120}
+                        status={1}
+                        venue="Room 101"
+                    />
+                    <Card
+                        id="1"
+                        image="/club1.jpg"
+                        title="Tech Club"
+                        registration={120}
+                        status={1}
+                        venue="Room 101"
+                    />
+                    <Card
+                        id="2"
+                        image="/club2.jpg"
+                        title="Art Club"
+                        registration={80}
+                        status={1}
+                        venue="Room 102"
+                    />
+                </div>
+            </section>
+
             <section
                 className="bg-gray-50 w-full relative overflow-hidden"
                 style={{
